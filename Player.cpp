@@ -120,6 +120,8 @@ void dli_insertAt(dPlayerList& dli, size_t index, const std::string& name, int i
 }
 
 
+
+// dli => |0|1|.....|n-1|n|
 void dli_delete(dPlayerList& dli, size_t index) {
 	// if nothign on the list
 	if (dli.size_ == 0) {
@@ -135,8 +137,9 @@ void dli_delete(dPlayerList& dli, size_t index) {
 		return;
 	}
 	//  it is out of scope to delete.
-	else if (dli.size_ == 1 &&( index > 0 || index > dli.size_ - 1)) { 
-		std::cout << " OUT OF SCOPE ERROR.\n";
+	if (dli.size_ <= 0 || (index < 0 || index > dli.size_ - 1)) {
+		std::cout << " OUT OF SCOPE ERROR."<<
+			"index is " << index << " and size is << "<< dli.size_ << "\n";
 		return;
 	}
 
@@ -153,21 +156,38 @@ void dli_delete(dPlayerList& dli, size_t index) {
 		dli.head_ = pH1;
 		pH0 = nullptr;
 		dli.size_ -= 1;
-
-		
-		}
+		pH1->prev_ = nullptr; // deletes tail
+		return;
 	}
 
-	// if deleting the last 
+	//if deleting the last index;
 	if (index == (dli.size_ - 1)) {
-		size_t curr = 0;
-		while (index != curr++) {
-			pH0 = pH0->next_;
-			pH1 = pH1->next_;
-		}
+		pT0 = pT0->prev_; // sets to the node previous
+		pT0->next_ = nullptr; // make it point to null
+		dli.tail_ = pT0; // point tail to the last node
+		return;
 	}
 
-	// deleting other
+	// delete whereever asked
+	playerNode* temp = dli.head_;
+	int counter = 0;
+	while (counter != index) {
+		temp = temp->next_;
+		//std::cout << temp->pl_.getName() << "<-test->";
+		counter += 1;
+	}
+	// pH0 is the node we want to delete;
+	pT0 = temp->prev_;
+	pT1 = temp->next_;
+
+	pT0->next_ = pT1;
+	pT1->prev_ = pT0;
+	//delete pH0;
+
+
+
+
+	
 }
 
 void dli_display(dPlayerList& dli) {
