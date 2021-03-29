@@ -5,22 +5,43 @@ Application created by Carlos Agustin
 
 #include <iostream>
 #include "Player.h"
+#include "TicTacToeh.h"
 #include <string>
 using namespace std;
 
 
 void greeting();
-void newUser();
-
+void testnewUser();
+void mainMenuText(bool isUserLogged);
 //input valid for selection
 char input;
 
 int main() {
-	
+	TicTacToe ttt;
+	bool toContinue = true; // checks to continue
+	bool isUserlogged = false; // check to see if user is logged in.
+	char userInput;
 	greeting();
 	std::cin.ignore(); // Ignoring
-	newUser();
-	
+	//testnewUser();
+	do {
+		mainMenuText(isUserlogged);
+		cin >> userInput;
+		switch (userInput) {
+		case 'a': cout << "running a";
+			
+			ttt.playGame();
+			break;
+
+		case 'b': cout << "running b";
+			break;
+		
+		case 'c': cout << "running c";
+			break;
+		default:
+			cout << "default\n";
+		}
+	} while (toContinue && userInput != 'q');
 	return 0;
 }
 
@@ -30,14 +51,18 @@ void greeting() {
 	std::cout << "press enter to continue..." << std::endl << ">>";
 }
 
-void mainMenu() {
-	std::cout << "[a] Tic Tac Toe\n"
-		<< "[b] ....."
-		<< "[q] Quit\n>>";
+void mainMenuText(bool isUserLogged) {
+	std::cout << "[a] Log in\n"
+		<< "[b] .....\n";
+	if (isUserLogged) {
+		std::cout << "[b] TicTacToe\n"
+			<< "[c] other games";
+	}
+	std::cout << "[q] to quit\n>>";
 
 }
 
-void newUser() {
+void testnewUser() {
 	std::string name;
 	std::cout << "Please Enter Player Name:";
 	//std::getline(std::cin, name);
